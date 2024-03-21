@@ -14,7 +14,9 @@ for path in sorted(src.rglob("*.py")):
     full_doc_path = Path("code_reference", doc_path)
 
     parts = tuple(module_path.parts)
-    if parts[-1] == "__init__":
+    if parts[0] != 'package_name':
+        continue
+    elif parts[-1] == "__init__":
         parts = parts[:-1]
         doc_path = doc_path.with_name("index.md")
         full_doc_path = full_doc_path.with_name("index.md")

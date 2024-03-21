@@ -1,4 +1,4 @@
-class MyClass2:
+class MyClass:
     """
     This is a sample class demonstrating the usage of numpy docstring format.
 
