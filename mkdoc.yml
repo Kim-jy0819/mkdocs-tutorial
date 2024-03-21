@@ -1,0 +1,21 @@
+site_name: docs_name
+docs_dir: "docs/"
+
+plugins:
+- search
+- gen-files:
+    scripts:
+    - script/gen_ref_pages.py # mkdocs serve할 때 자동으로 md 파일 생성
+- literate-nav:
+    nav_file: SUMMARY.md # API 구조가 적힌 파일. gen_ref_pages.py로 생성
+- section-index
+- mkdocstrings:
+    handlers:
+        python:
+            options:
+                docstring_style: numpy # 다른 스타일: google, sphinx
+theme : material # 다른 테마: readthedocs
+
+nav:
+- Code Reference: code_reference/ # documentation의 컨텐츠를 표출하기 위한 md 파일을 지정
+# rest of the navigation...

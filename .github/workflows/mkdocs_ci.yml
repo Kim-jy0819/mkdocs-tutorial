@@ -1,0 +1,36 @@
+name: Build and Deploy MKDocs
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  pull_request:
+      branches: [main]
+      types:
+      - closed
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::{number}:role/{GithubActionRole}
+          aws-region: ap-northeast-2
+
+      - name: Install Dependencies
+        run: >
+          pip install mkdocs-material mkdocstrings[python] \
+            mkdocs-section-index mkdocs-gen-files mkdocs-literate-nav
+
+      - name: Build Static Website
+        run: mkdocs build
+
+      - name: Copy files to the production website with the AWS CLI
+        run: aws s3 sync ./site s3://docs.package_name.company_name.com --delete --quiet
